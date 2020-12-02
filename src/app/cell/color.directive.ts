@@ -11,7 +11,6 @@ export class ColorDirective implements OnInit {
   svg = d3.select('#cell');
 
   @HostBinding('style.opacity') opacity: string;
-  @HostBinding('style.transition-duration') transition: string = '0.2s';
 
   constructor(private elementRef: ElementRef) {}
 
@@ -19,15 +18,23 @@ export class ColorDirective implements OnInit {
     this.opacity = this.defaultOpacity;
   }
 
-  @HostListener('document:click', ['$event']) clickEl(eventData: Event) {
-    console.log(eventData.target);
-  }
+  // @HostListener('click') clickEl(eventData: Event) {
+  //   console.log(this.elementRef.nativeElement.id);
+  //   console.log(this.svg.selectAll(`path#${this.elementRef.nativeElement.id}`));
+  //   this.svg.selectAll(`path#${this.elementRef.nativeElement.id}`)
+  //           .transition().duration(200)
+  //           .style('opacity', this.highlightOpacity);
+  // }
 
   @HostListener('mouseenter') mouseOver(eventData: Event) {
-    this.opacity = this.highlightOpacity;
+    this.svg.selectAll(`path#${this.elementRef.nativeElement.id}`)
+            .transition().duration(200)
+            .style('opacity', this.highlightOpacity);
   }
 
   @HostListener('mouseleave') mouseLeave(eventData: Event) {
-    this.opacity = this.defaultOpacity;
+    this.svg.selectAll(`path#${this.elementRef.nativeElement.id}`)
+            .transition().duration(200)
+            .style('opacity', this.defaultOpacity);
   }
 }
