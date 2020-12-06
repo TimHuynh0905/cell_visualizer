@@ -1,10 +1,14 @@
 .legend {
-    background-color: rgb(210, 210, 210);
-    text-align: center!important;
+    display: block;
     margin-top: 1cm;
-    border-color: black;
-    border-style: solid;
-    width: 400px;
+    margin-bottom: 1cm;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5cm;
+    background-color: rgb(220, 220, 220);
+    text-align: center!important;
+    border-radius: 10px;
+    width: 70%;
     justify-content: center;
 }
 
@@ -14,15 +18,15 @@
     font-size: 90%;
 }
 
-.legend .legend-scale ul {
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0;
+.legend .legend-scale .legend-labels {
     list-style: none;
     width: 90%;
+    margin-top: 0.5cm;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.legend .legend-scale ul li {
+.legend .legend-scale .legend-labels li {
     display: block;
     float: left;
     width: 20%;
@@ -40,6 +44,7 @@
 }
 
 .legend .legend-note {
+    display: inline;
     color: black;
     font-size: 80%;
     font-style: italic;

@@ -1,13 +1,9 @@
-.selection {
+.description {
     display: block;
     width: 70%;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 1cm;
     padding: 0.5cm;
     background-color: rgb(220, 220, 220);
     border-radius: 10px;
-}
-.selection .selections {
-    margin-bottom: 0.5cm;
 }

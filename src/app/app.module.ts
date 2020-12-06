@@ -8,6 +8,7 @@ import { ColorDirective } from './cell/color.directive';
 import { CellService } from './cell/cell.service';
 import { SelectionComponent } from './selection/selection.component';
 import { LegendComponent } from './legend/legend.component';
+import { DescriptionsComponent } from './descriptions/descriptions.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { LegendComponent } from './legend/legend.component';
     CellComponent,
     ColorDirective,
     SelectionComponent,
-    LegendComponent
+    LegendComponent,
+    DescriptionsComponent
   ],
   imports: [
     BrowserModule,

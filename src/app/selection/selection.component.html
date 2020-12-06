@@ -1,7 +1,6 @@
-<div>
-  <strong>Single selection: </strong> {{ singleSelection }}
-  <br/>
-  <div>
+<div class='selection'>
+  <div class='selections'><strong>Single selection: </strong> {{ singleSelection }}</div>
+  <div class='selections'>
     <strong>Multi selection: </strong>
     <span *ngFor='let component of selectedComponents'>
       <span>{{ component }}, </span>
@@ -9,8 +8,10 @@
   </div>
   <br/>
   <button 
-    id='clear-button' 
+    id='clear-button'
     type='submit'
+    class='btn btn-danger'
+    [disabled]='selectedComponents.length == 0'
     (click)='onClearSelections()'
   >
       Clear

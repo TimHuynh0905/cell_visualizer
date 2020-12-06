@@ -1,5 +1,4 @@
 import { Injectable, EventEmitter } from "@angular/core";
-import * as d3 from 'd3';
 
 @Injectable()
 export class CellService {
@@ -7,7 +6,7 @@ export class CellService {
     singleSelectionChanged = new EventEmitter<string>();
 
     private selectedComponents: string[] = [];
-    private singleSelection: string;
+    private singleSelection: string = '';
     private clearBtnClicked: boolean = false;
 
     getSelectedComponents () {
