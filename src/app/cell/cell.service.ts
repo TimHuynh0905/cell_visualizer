@@ -23,7 +23,7 @@ export class CellService {
             component => component === title
         );
 
-        console.log(indexExisted);
+        // console.log(indexExisted);
 
         if (indexExisted >= 0) {
             this.selectedComponents.splice(indexExisted, 1);

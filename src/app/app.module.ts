@@ -7,13 +7,15 @@ import { CellComponent } from './cell/cell.component';
 import { ColorDirective } from './cell/color.directive';
 import { CellService } from './cell/cell.service';
 import { SelectionComponent } from './selection/selection.component';
+import { LegendComponent } from './legend/legend.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CellComponent,
     ColorDirective,
-    SelectionComponent
+    SelectionComponent,
+    LegendComponent
   ],
   imports: [
     BrowserModule,
