@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, Component, OnInit } from '@angular/core';
 import { MELANOMA } from '../shared/melanoma';
 import * as d3 from 'd3';
 import { ComponentTitles } from '../shared/titles.model';
+import { CellService } from './cell.service';
 
 
 @Component({
@@ -10,18 +11,35 @@ import { ComponentTitles } from '../shared/titles.model';
   styleUrls: ['./cell.component.css']
 })
 
-export class CellComponent implements OnInit {
-
+export class CellComponent implements OnInit, AfterContentInit, AfterContentChecked {
   components = MELANOMA;
   colorMaps: ComponentTitles = new ComponentTitles();
-  
-  constructor() {
+  svg = d3.select('#cell');
+  selectedComponents: string[] = [];  
+
+  constructor(private cellService: CellService) {}
+
+  ngOnInit() {
     const cyanMagentaScale = d3.interpolateLab('cyan', 'magenta');
     this.components.forEach(
       component => this.colorMaps[component.Title] = component.interpolate ? cyanMagentaScale(component.interpolate) : 'white'
     );
+
+    this.selectedComponents = this.cellService.getSelectedComponents();
+    this.cellService.selectedComponentsChanged.subscribe(
+      (components: string[]) => this.selectedComponents = components
+    );
   }
 
-  ngOnInit() {}
+  ngAfterContentInit() {
+    this.svg = d3.select('#cell');
+  }
 
+  ngAfterContentChecked() {
+    if (this.cellService.getClearBtnClickedStatus() && this.selectedComponents.length == 0) {
+      this.svg.selectAll('path').transition().duration(200)
+              .style('opacity', '0.2');
+      this.cellService.clearBtnClickedToggle();
+    }
+  }
 }

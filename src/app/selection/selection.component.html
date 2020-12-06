@@ -1,0 +1,18 @@
+<div>
+  <strong>Single selection: </strong> {{ singleSelection }}
+  <br/>
+  <div>
+    <strong>Multi selection: </strong>
+    <span *ngFor='let component of selectedComponents'>
+      <span>{{ component }}, </span>
+    </span>
+  </div>
+  <br/>
+  <button 
+    id='clear-button' 
+    type='submit'
+    (click)='onClearSelections()'
+  >
+      Clear
+  </button>
+</div>
