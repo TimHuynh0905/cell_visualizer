@@ -9,6 +9,9 @@ import { CellService } from './cell/cell.service';
 import { SelectionComponent } from './selection/selection.component';
 import { LegendComponent } from './legend/legend.component';
 import { DescriptionsComponent } from './descriptions/descriptions.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { SubmissionsComponent } from './submissions/submissions.component';
+import { SubmissionComponent } from './submissions/submission/submission.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { DescriptionsComponent } from './descriptions/descriptions.component';
     ColorDirective,
     SelectionComponent,
     LegendComponent,
-    DescriptionsComponent
+    DescriptionsComponent,
+    NavbarComponent,
+    SubmissionsComponent,
+    SubmissionComponent
   ],
   imports: [
     BrowserModule,

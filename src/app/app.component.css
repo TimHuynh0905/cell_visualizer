@@ -1,4 +1,8 @@
-.row {
+.container {
+    overflow: visible;
+}
+
+.container .row {
     display: flex;
     margin: auto;
 }
