@@ -14,6 +14,7 @@
 .navbar .navbar-items {
     margin-top: auto;
     margin-bottom: auto;
+    cursor: pointer;
 }
 
 .navbar .navbar-items .navbar-texts{

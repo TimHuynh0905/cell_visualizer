@@ -1,7 +1,26 @@
 <div class='navbar'>
-    <h1 class='navbar-brand'>Cell Visualizer</h1>
+    <h1 
+        routerLink='/' 
+        class='navbar-items navbar-brand' 
+        role="presentation" 
+        routerLinkActive='active'
+        [routerLinkActiveOptions]='{ exact: true }'>
+            Cell Visualizer
+    </h1>
     <ul class='navbar-items'>
-        <span class='navbar-texts'><a>Sign In</a></span>
-        <span class='navbar-texts'><a>Sign Up</a></span>
+        <span 
+            routerLink='/signin' 
+            class='navbar-texts'
+            role="presentation" 
+            routerLinkActive='active'>
+            <a>Sign In</a>
+        </span>
+        <span 
+            routerLink='/signup' 
+            class='navbar-texts'
+            role="presentation" 
+            routerLinkActive='active'>
+            <a>Sign Up</a>
+        </span>
     </ul>
 </div>
