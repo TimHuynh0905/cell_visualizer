@@ -31,6 +31,7 @@ export class ColorDirective implements OnInit {
 
   @HostListener('click') click(eventData: Event) {
     this.cellService.addSelectedComponent(this.elementRef.nativeElement.id);
+    console.log(this.elementRef);
   }
 
   @HostListener('mouseenter') mouseOver(eventData: Event) {

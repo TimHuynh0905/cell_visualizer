@@ -1,9 +1,9 @@
 <div class='selection'>
-  <div class='selections'><strong>Single selection: </strong> {{ singleSelection }}</div>
+  <div class='selections'><strong>Single selection: </strong> {{ map[singleSelection] }}</div>
   <div class='selections'>
     <strong>Multi selection: </strong>
     <span *ngFor='let component of selectedComponents'>
-      <span>{{ component }}, </span>
+      <span>{{ map[component] }}, </span>
     </span>
   </div>
   <br/>
