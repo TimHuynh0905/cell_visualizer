@@ -1,9 +1,11 @@
 import { Injectable, EventEmitter } from "@angular/core";
+import * as d3 from 'd3';
 
 @Injectable()
 export class CellService {
     selectedComponentsChanged = new EventEmitter<string[]>();
     singleSelectionChanged = new EventEmitter<string>();
+    svg = d3.select('#cell');
 
     private selectedComponents: string[] = [];
     private singleSelection: string = '';

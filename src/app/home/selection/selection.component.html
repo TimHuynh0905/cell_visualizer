@@ -11,6 +11,7 @@
     id='clear-button'
     type='submit'
     class='btn btn-danger'
+    [disabled]='selectedComponents.length == 0'
     (click)='onClearSelections()'
   >
       Clear

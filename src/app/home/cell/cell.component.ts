@@ -32,12 +32,14 @@ export class CellComponent implements OnInit, AfterContentInit, AfterContentChec
   }
 
   ngAfterContentInit() {
-    this.svg = d3.select('#cell');
+    // console.log('cell component: ngAfterContentInit');
+    this.cellService.svg = d3.select('#cell');
   }
 
   ngAfterContentChecked() {
+    // console.log('cell component: ngAfterContentChecked');
     if (this.cellService.getClearBtnClickedStatus() && this.selectedComponents.length == 0) {
-      this.svg.selectAll('path').transition().duration(200)
+      this.cellService.svg.selectAll('path').transition().duration(200)
               .style('opacity', '0.2');
       this.cellService.clearBtnClickedToggle();
     }

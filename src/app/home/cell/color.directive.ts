@@ -9,21 +9,20 @@ import { CellService } from './cell.service';
 export class ColorDirective implements OnInit {
   defaultOpacity: string = '0.2';
   highlightOpacity: string = '1';
-  svg = d3.select('#cell');
   selectedComponents: string[] = [];
 
-  constructor(private elementRef: ElementRef, private cellService: CellService) {}
+  constructor(private elementRef: ElementRef, private cellService: CellService) {
+    // console.log('color directive: constructor');
+  }
 
   ngOnInit() {
-    this.svg.selectAll('path').style('opacity', this.defaultOpacity);
-    console.log(this.svg['_groups'][0][0]);
+    // console.log('color directive: ngOnInit');
+    this.cellService.svg.selectAll('path').style('opacity', this.defaultOpacity);
     this.selectedComponents = this.cellService.getSelectedComponents();
     this.cellService.selectedComponentsChanged.subscribe(
       (components: string[]) => this.selectedComponents = components
     );
-    console.log(this.selectedComponents);
     if (this.selectedComponents.length == 0) {
-      console.log('here1');
       this.updateSelectedComponentsOpacity(this.defaultOpacity);
     } else {
       this.updateSelectedComponentsOpacity(this.highlightOpacity);
@@ -49,14 +48,13 @@ export class ColorDirective implements OnInit {
   }
 
   updateSelectedComponentsOpacity(opacity: string) {
-    console.log('here2');
     this.selectedComponents.forEach(
       component => this.updateComponentOpacity(component, opacity)
     );
   }
 
   updateComponentOpacity(component: string, opacity: string) {
-    this.svg.selectAll(`path#${component}`)
+    this.cellService.svg.selectAll(`path#${component}`)
             .transition().duration(200)
             .style('opacity', opacity);
   }
