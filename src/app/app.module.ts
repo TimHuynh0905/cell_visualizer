@@ -17,6 +17,7 @@ import { SubmissionComponent } from './submissions/submission/submission.compone
 import { SignupComponent } from './authentication/signup/signup.component';
 import { SigninComponent } from './authentication/signin/signin.component';
 import { HomeComponent } from './home/home.component';
+import { FormsModule } from '@angular/forms';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -35,14 +36,15 @@ const appRoutes: Routes = [
     NavbarComponent,
     SubmissionsComponent,
     SubmissionComponent,
-    SignupComponent,
     SigninComponent,
-    HomeComponent
+    SignupComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [CellService],

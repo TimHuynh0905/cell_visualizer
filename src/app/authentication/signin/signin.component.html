@@ -1,1 +1,27 @@
-<p>signin works!</p>
+<div class='sign-in-form'>
+    <h4>Sign In</h4>
+    <div class='group'>
+        <input 
+            class='form-input'
+            type='email'
+            id='email'
+            [(ngModel)]='emailInput'>
+        <label 
+            [ngClass]="emailInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
+            Email
+        </label>
+    </div>
+    <div class='group'>
+        <input 
+            class='form-input'
+            type='password'
+            id='password'
+            [(ngModel)]='passwordInput'>
+        <label 
+            [ngClass]="passwordInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
+            Password
+        </label>
+    </div>
+    <button type="button" class="btn btn-primary mr-2">Sign In</button>
+    <button type="button" class="btn btn-danger">Cancel</button>
+</div>

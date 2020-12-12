@@ -1,1 +1,49 @@
-<p>signup works!</p>
+<div class='sign-up-form'>
+    <h4>Sign Up</h4>
+    <div class='group'>
+        <input 
+            class='form-input'
+            type='text'
+            id='username'
+            [(ngModel)]='usernameInput'>
+        <label 
+            [ngClass]="usernameInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
+            User Name
+        </label>
+    </div>
+    <div class='group'>
+        <input 
+            class='form-input'
+            type='email'
+            id='email'
+            [(ngModel)]='emailInput'>
+        <label 
+            [ngClass]="emailInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
+            Email
+        </label>
+    </div>
+    <div class='group'>
+        <input 
+            class='form-input'
+            type='password'
+            id='password'
+            [(ngModel)]='passwordInput'>
+        <label 
+            [ngClass]="passwordInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
+            Password
+        </label>
+    </div>
+    <div class='group'>
+        <input 
+            class='form-input'
+            type='password'
+            id='confirmPassword'
+            [(ngModel)]='confirmPasswordInput'>
+        <label 
+            [ngClass]="confirmPasswordInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
+            Confirm Password
+        </label>
+    </div>
+    <button type="button" class="btn btn-primary mr-2">Sign Up</button>
+    <button type="button" class="btn btn-danger">Cancel</button>
+</div>
