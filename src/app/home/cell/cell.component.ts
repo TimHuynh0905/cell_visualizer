@@ -1,14 +1,14 @@
 import { AfterContentChecked, AfterContentInit, Component, OnInit } from '@angular/core';
-import { MELANOMA } from '../shared/melanoma';
+import { MELANOMA } from '../../shared/melanoma';
 import * as d3 from 'd3';
-import { ComponentTitles } from '../shared/cell.model';
+import { ComponentTitles } from '../../shared/cell.model';
 import { CellService } from './cell.service';
 
 
 @Component({
   selector: 'app-cell',
   templateUrl: './cell.component.html',
-  styleUrls: ['./cell.component.css']
+  styleUrls: ['./cell.component.css'],
 })
 
 export class CellComponent implements OnInit, AfterContentInit, AfterContentChecked {

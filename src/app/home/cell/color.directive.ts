@@ -16,12 +16,14 @@ export class ColorDirective implements OnInit {
 
   ngOnInit() {
     this.svg.selectAll('path').style('opacity', this.defaultOpacity);
+    console.log(this.svg['_groups'][0][0]);
     this.selectedComponents = this.cellService.getSelectedComponents();
     this.cellService.selectedComponentsChanged.subscribe(
       (components: string[]) => this.selectedComponents = components
     );
-    
+    console.log(this.selectedComponents);
     if (this.selectedComponents.length == 0) {
+      console.log('here1');
       this.updateSelectedComponentsOpacity(this.defaultOpacity);
     } else {
       this.updateSelectedComponentsOpacity(this.highlightOpacity);
@@ -47,6 +49,7 @@ export class ColorDirective implements OnInit {
   }
 
   updateSelectedComponentsOpacity(opacity: string) {
+    console.log('here2');
     this.selectedComponents.forEach(
       component => this.updateComponentOpacity(component, opacity)
     );

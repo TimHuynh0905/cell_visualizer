@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CellService } from '../cell/cell.service';
-import { MELANOMA } from '../shared/melanoma';
+import { MELANOMA } from '../../shared/melanoma';
 
 @Component({
   selector: 'app-legend',
