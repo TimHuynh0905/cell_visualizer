@@ -7,20 +7,26 @@
         [routerLinkActiveOptions]='{ exact: true }'>
             Cell Visualizer
     </h1>
-    <ul class='navbar-items'>
-        <span 
-            routerLink='/signin' 
+    <ul class='navbar-items nav nav-tabs'>
+        <li 
             class='navbar-texts'
-            role="presentation" 
-            routerLinkActive='active'>
-            <a>Sign In</a>
-        </span>
-        <span 
-            routerLink='/signup' 
+            role="presentation">
+            <a 
+                class='nav-link' 
+                routerLinkActive='active' 
+                routerLink='/signin'>
+                Sign In
+            </a>
+        </li>
+        <li 
             class='navbar-texts'
-            role="presentation" 
-            routerLinkActive='active'>
-            <a>Sign Up</a>
-        </span>
+            role="presentation">
+            <a 
+                class='nav-link' 
+                routerLinkActive='active' 
+                routerLink='/signup'>
+                Sign Up
+            </a>
+        </li>
     </ul>
 </div>
