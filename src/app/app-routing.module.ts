@@ -22,6 +22,10 @@ const appRoutes: Routes = [
     component: SignupComponent,
     ...canActivate(redirectLoggedInToHome),
   },
+  {
+    path: '**',
+    redirectTo: '',
+  }
 ];
 
 @NgModule({
