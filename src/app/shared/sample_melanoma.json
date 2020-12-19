@@ -1,0 +1,170 @@
+[
+    {
+      "Title": "cytosol",
+      "ID": "GO:0005829",
+      "min_pval": 0.00005400000000000001,
+      "log_min_pval": 4.267606240177031,
+      "interpolate": 1
+    },
+    {
+      "Title": "intermediate_filament",
+      "ID": "GO:0005882",
+      "min_pval": null,
+      "log_min_pval": null,
+      "interpolate": null
+    },
+    {
+      "Title": "actin_filament",
+      "ID": "GO:0005884",
+      "min_pval": 0.03701,
+      "log_min_pval": 1.4316809149048884,
+      "interpolate": 0.335476
+    },
+    {
+      "Title": "focal_adhesion_site",
+      "ID": null,
+      "min_pval": null,
+      "log_min_pval": null,
+      "interpolate": null
+    },
+    {
+      "Title": "microtubule_organizing_center",
+      "ID": "GO:0005815",
+      "min_pval": 0.38096,
+      "log_min_pval": 0.41912062193919536,
+      "interpolate": 0.09821
+    },
+    {
+      "Title": "centrosome",
+      "ID": "GO:0005813",
+      "min_pval": 0.43974,
+      "log_min_pval": 0.3568040279232572,
+      "interpolate": 0.083608
+    },
+    {
+      "Title": "microtubule",
+      "ID": "GO:0005874",
+      "min_pval": 0.08911000000000001,
+      "log_min_pval": 1.0500735563320875,
+      "interpolate": 0.24605700000000003
+    },
+    {
+      "Title": "microtubule_end",
+      "ID": "GO:1990752",
+      "min_pval": null,
+      "log_min_pval": null,
+      "interpolate": null
+    },
+    {
+      "Title": "secreted_protein",
+      "ID": null,
+      "min_pval": null,
+      "log_min_pval": null,
+      "interpolate": null
+    },
+    {
+      "Title": "lipid_droplet",
+      "ID": "GO:0005811",
+      "min_pval": 0.68643,
+      "log_min_pval": 0.16340374417196116,
+      "interpolate": 0.038289
+    },
+    {
+      "Title": "lysosome",
+      "ID": "GO:0005764",
+      "min_pval": 0.35378000000000004,
+      "log_min_pval": 0.4512667224018472,
+      "interpolate": 0.105742
+    },
+    {
+      "Title": "peroxisome",
+      "ID": "GO:0005777",
+      "min_pval": 0.40992,
+      "log_min_pval": 0.3873008919354077,
+      "interpolate": 0.090754
+    },
+    {
+      "Title": "endosome",
+      "ID": "GO:0005768",
+      "min_pval": 0.00915,
+      "log_min_pval": 2.0385789059335515,
+      "interpolate": 0.477687
+    },
+    {
+      "Title": "endoplasmic_reticulum",
+      "ID": "GO:0005783",
+      "min_pval": 0.0018,
+      "log_min_pval": 2.744727494896693,
+      "interpolate": 0.643154
+    },
+    {
+      "Title": "golgi_apparatus",
+      "ID": "GO:0005794",
+      "min_pval": 0.02368,
+      "log_min_pval": 1.6256183019491175,
+      "interpolate": 0.38092
+    },
+    {
+      "Title": "nucleoplasm",
+      "ID": "GO:0005654",
+      "min_pval": 0.00942,
+      "log_min_pval": 2.0259490972071226,
+      "interpolate": 0.47472700000000007
+    },
+    {
+      "Title": "nuclear_membrane",
+      "ID": "GO:0031965",
+      "min_pval": 0.42226,
+      "log_min_pval": 0.3744200566334637,
+      "interpolate": 0.08773500000000001
+    },
+    {
+      "Title": "nuclear_body",
+      "ID": "GO:0016604",
+      "min_pval": 0.19345,
+      "log_min_pval": 0.7134312659427361,
+      "interpolate": 0.167174
+    },
+    {
+      "Title": "nuclear_speckle",
+      "ID": null,
+      "min_pval": null,
+      "log_min_pval": null,
+      "interpolate": null
+    },
+    {
+      "Title": "nucleolus",
+      "ID": "GO:0005730",
+      "min_pval": 0.004529999999999999,
+      "log_min_pval": 2.343901797987168,
+      "interpolate": 0.549231
+    },
+    {
+      "Title": "nucleoli_fibrillar_center",
+      "ID": null,
+      "min_pval": null,
+      "log_min_pval": null,
+      "interpolate": null
+    },
+    {
+      "Title": "rods_and_ring",
+      "ID": null,
+      "min_pval": null,
+      "log_min_pval": null,
+      "interpolate": null
+    },
+    {
+      "Title": "mitochondrion",
+      "ID": "GO:0005739",
+      "min_pval": 0.0846,
+      "log_min_pval": 1.0726296369609762,
+      "interpolate": 0.251342
+    },
+    {
+      "Title": "plasma_membrane",
+      "ID": "GO:0005886",
+      "min_pval": 0.00058,
+      "log_min_pval": 3.2365720064370627,
+      "interpolate": 0.758405
+    }
+]

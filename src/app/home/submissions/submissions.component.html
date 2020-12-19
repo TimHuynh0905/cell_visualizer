@@ -5,7 +5,7 @@
                 <div class="form-group">
                     <label for="file-input">Choose available data here: </label>
                     <select class="form-control" id="file-input">
-                        <option>Default select</option>
+                        <option *ngFor='let sampleTitle of sampleJsonTitles'>{{ sampleTitle }}</option>
                     </select>
                       
                 </div>
