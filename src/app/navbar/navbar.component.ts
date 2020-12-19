@@ -15,7 +15,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.authService.user.subscribe(
       (userAuth: firebase.User) => {
-        console.log(userAuth);
+        // console.log(userAuth);
         this.isAuthenticated = userAuth ? true : false;
     });
   }

@@ -20,8 +20,10 @@ export class SignupComponent implements OnInit {
   signup() {
     if (this.passwordInput === this.confirmPasswordInput) {
       this.authService.register(
+        this.usernameInput,
         this.emailInput,
-        this.passwordInput)
+        this.passwordInput
+      );
     }
   } 
 }

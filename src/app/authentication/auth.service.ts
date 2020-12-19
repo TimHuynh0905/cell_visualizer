@@ -5,25 +5,24 @@ import firebase from  'firebase/app';
 import 'firebase/firestore';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public user: Observable<firebase.User>;
+  public userDetails;
   private userAuth: firebase.User = null;
 
   constructor(private firebaseAuth: AngularFireAuth,
               private router: Router) {
     this.user = firebaseAuth.authState;
     this.user.subscribe(
-      (userAuth: firebase.User) => {
-        console.log(userAuth);
+      async (userAuth: firebase.User) => {
         this.userAuth = userAuth ? userAuth : null;
+        this.userDetails = userAuth ? await this.fetchUserDocument() : null;
+        console.log(this.userDetails);
       }
     );
-    console.log(this.user);
-    console.log(this.userAuth);
   }
 
   async signin(email: string, password: string) {
@@ -48,12 +47,12 @@ export class AuthService {
       });
   }
 
-  async register(email: string, password: string) {
+  async register(username: string, email: string, password: string) {
     await this.firebaseAuth.createUserWithEmailAndPassword(email, password)
       .then(async (userCredential: firebase.auth.UserCredential) => {
         const { user } = userCredential;
         console.log(user);
-        await this.createUserProfileDocument(user, { });
+        await this.createUserProfileDocument(user, username);
         this.router.navigate(['/signin']);
       })
       .catch(e => console.log(e.message));
@@ -79,5 +78,19 @@ export class AuthService {
         }
     }
     return userRef;
+  }
+
+  async fetchUserDocument() {
+    if (!this.userAuth) return;
+
+    const userRef = firebase.firestore().doc(`users/${this.userAuth.uid}`);
+    const snapShot = await userRef.get();
+
+    if (!snapShot.exists) return;
+
+    return {
+      id: snapShot.id,
+      ...snapShot.data(),
+    };
   }
 }
