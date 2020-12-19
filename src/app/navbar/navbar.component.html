@@ -2,15 +2,24 @@
     <h1 
         routerLink='/' 
         class='navbar-items navbar-brand' 
-        role="presentation" 
         routerLinkActive='active'
         [routerLinkActiveOptions]='{ exact: true }'>
             Cell Visualizer
     </h1>
     <ul class='navbar-items nav nav-tabs'>
         <li 
-            class='navbar-texts'
-            role="presentation">
+            *ngIf='isAuthenticated'
+            class='nav-item'>
+            <a 
+                class='nav-link' 
+                routerLinkActive='active' 
+                (click)='signout()'>
+                Sign Out
+            </a>
+        </li>
+        <li 
+            *ngIf='!isAuthenticated'
+            class='nav-item'>
             <a 
                 class='nav-link' 
                 routerLinkActive='active' 
@@ -19,8 +28,8 @@
             </a>
         </li>
         <li 
-            class='navbar-texts'
-            role="presentation">
+            *ngIf='!isAuthenticated'
+            class='nav-item'>
             <a 
                 class='nav-link' 
                 routerLinkActive='active' 

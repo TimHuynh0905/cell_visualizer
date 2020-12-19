@@ -17,12 +17,6 @@
     cursor: pointer;
 }
 
-.navbar .navbar-items .navbar-texts {
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
-.navbar .navbar-items .navbar-texts a {
-    /* text-decoration: none!important; */
+.navbar .navbar-items a {
     color: black;
 }

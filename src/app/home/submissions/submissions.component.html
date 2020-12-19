@@ -21,7 +21,7 @@
                         id="file-upload">
                 </div>
             </form>
-            <div class='layer'>
+            <div *ngIf='!isAuthenticated' class='layer'>
                 <h4>You have to sign in first ...</h4>
             </div>
         </div>

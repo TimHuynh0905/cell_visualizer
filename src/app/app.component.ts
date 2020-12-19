@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import firebase from  'firebase/app';
+
+import { AuthService } from './authentication/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +10,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
-  title = 'advaita-angular-frontend';
+export class AppComponent implements OnInit, OnDestroy {
+  constructor() {}
+
+  ngOnInit() {
+  }
+
+  ngOnDestroy() {
+  }
 }

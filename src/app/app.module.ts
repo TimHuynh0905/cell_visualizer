@@ -11,6 +11,8 @@ import { CellService } from './home/cell/cell.service';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { FirebaseModule } from './firebase.module';
+import { AuthService } from './authentication/auth.service';
 
 @NgModule({
   declarations: [
@@ -23,9 +25,13 @@ import { NavbarComponent } from './navbar/navbar.component';
     FormsModule,
     AppRoutingModule,
     ComponentsModule,
-    DirectivesModule
+    DirectivesModule,
+    FirebaseModule
   ],
-  providers: [ CellService ],
+  providers: [ 
+    AuthService, 
+    CellService 
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

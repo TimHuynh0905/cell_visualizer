@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/authentication/auth.service';
+import firebase from 'firebase/app';
 
 @Component({
   selector: 'app-submissions',
@@ -6,10 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./submissions.component.css']
 })
 export class SubmissionsComponent implements OnInit {
+  isAuthenticated: boolean = false;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.authService.user.subscribe(
+      (userAuth: firebase.User) => {
+        console.log(userAuth);
+        this.isAuthenticated = userAuth ? true : false;
+    });
   }
 
 }
