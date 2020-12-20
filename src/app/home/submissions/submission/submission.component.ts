@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { UploadTaskSnapshot } from '@angular/fire/storage/interfaces';
@@ -15,6 +15,12 @@ export class SubmissionComponent implements OnInit {
   fileToUpload: File;
   userDetails: UserModel = null;
   task: AngularFireUploadTask;
+
+  @Output() newUserJsonObject = new EventEmitter<{
+    downloadUrl: string,
+    fullPath: string,
+    name: string
+  }>();
 
   constructor(private firebaseStorage: AngularFireStorage,
               private authService: AuthService,
@@ -48,10 +54,9 @@ export class SubmissionComponent implements OnInit {
         async (snapShot: UploadTaskSnapshot) => {
           const { fullPath, name } = snapShot.ref;
           const downloadUrl = await snapShot.ref.getDownloadURL();
-          // const userFilesDocRef = await this.firestore.doc(`json_files/${this.userDetails.id}`).set({
-          //   'fileArray': [ { fullPath, name, downloadUrl } ]
-          // });
-          // console.log(userFilesDocRef);
+          
+          const newObject = { fullPath, name, downloadUrl };
+
           let currentState = [];
           const userFilesDocument = this.firestore.doc(`json_files/${this.userDetails.id}`)
           const userFilesDocRef = await userFilesDocument.get();
@@ -64,7 +69,7 @@ export class SubmissionComponent implements OnInit {
                     await userFilesDocument.update({
                       'fileArray':
                         [
-                          { fullPath, name, downloadUrl },
+                          newObject,
                           ...currentState
                         ]
                     });
@@ -72,11 +77,13 @@ export class SubmissionComponent implements OnInit {
                 );
               } else {
                 await userFilesDocument.set({
-                  'fileArray': [ { fullPath, name, downloadUrl } ]
+                  'fileArray': [ newObject ]
                 });
               }
             }
           );
+
+          this.newUserJsonObject.emit(newObject);
         }
       )
       .catch(e => console.log(e.message));

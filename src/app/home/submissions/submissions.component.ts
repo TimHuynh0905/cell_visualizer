@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/authentication/auth.service';
-import firebase from 'firebase/app';
-import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { UserModel } from 'src/app/shared/user.model';
 
@@ -35,6 +33,15 @@ export class SubmissionsComponent implements OnInit {
       }
     );
     this.fetchSampleJson();
+  }
+
+  onUserJsonObjectAdded(newObject: {
+    downloadUrl: string,
+    fullPath: string,
+    name: string
+  }) {
+    this.userJsonObjects.unshift(newObject);
+    this.userJsonTitles.unshift(newObject.name);
   }
 
   async fetchUserJson() {
