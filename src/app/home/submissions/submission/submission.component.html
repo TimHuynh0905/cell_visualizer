@@ -1,1 +1,18 @@
-<p>submission works!</p>
+<form>
+    <div class="form-group">
+        <label for="file-upload">Upload your data here: </label>
+        <input 
+            type="file" 
+            class="form-control-file" 
+            id="file-upload"
+            (change)="onFileChange($event)">
+    </div>
+    <button 
+        [disabled]='uploadBtnDisabled' 
+        class='btn btn-primary mr-1' 
+        type='submit'
+        (click)='onSubmit()'>
+            Upload
+    </button>
+    <button class='btn btn-danger'>Cancel</button>
+</form>

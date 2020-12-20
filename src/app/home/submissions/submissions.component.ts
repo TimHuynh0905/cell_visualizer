@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/authentication/auth.service';
 import firebase from 'firebase/app';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { UserModel } from 'src/app/shared/user.model';
 
 @Component({
   selector: 'app-submissions',
@@ -10,38 +11,64 @@ import { AngularFirestore } from '@angular/fire/firestore';
   styleUrls: ['./submissions.component.css']
 })
 export class SubmissionsComponent implements OnInit {
-  isAuthenticated: boolean = false;
+  userDetails: UserModel = null;
+
   sampleJsonTitles: string[] = [];
   sampleJsonLocations: string[] = [];
 
+  userJsonTitles: string[] = [];
+  userJsonObjects: {
+    downloadUrl: string,
+    fullPath: string,
+    name: string
+  }[] = [];
+
   constructor(private authService: AuthService,
-              private fireStorage: AngularFireStorage,
               private firestore: AngularFirestore) { }
 
   ngOnInit() {
-    this.authService.user.subscribe(
-      (userAuth: firebase.User) => {
-        // console.log(userAuth);
-        this.isAuthenticated = userAuth ? true : false;
-    });
-
-    this.fetchJsonTitles();
-  }
-
-  async fetchJsonTitles() {
-    this.firestore.collection('json_files').valueChanges().subscribe(
-      (jsonFilesCollection: [
-        {
-          samples: string[],
-          user_generated: string[],
-        }
-      ]) => {
-        this.sampleJsonLocations = jsonFilesCollection[0].samples;
-        this.sampleJsonTitles = this.sampleJsonLocations.map(
-          (location: string) => location.split('/').pop()
-        );
+    this.authService.userDetailsChanged.subscribe(
+      (newUserDetails: UserModel) => {
+        this.userDetails = newUserDetails;
+        console.log(this.userDetails);
+        if (this.userDetails) this.fetchUserJson(this.userDetails.id);
       }
-    );   
+    );
+    this.fetchSampleJson();
   }
 
+  async fetchUserJson(userID: string) {
+    const userFilesDocRef = await this.firestore.doc(`json_files/${userID}`).get();
+    userFilesDocRef.subscribe(
+      (async snapShot => {
+          console.log(snapShot.data());
+          Object.entries(snapShot.data()).forEach(
+            (entry,_) => {
+              this.userJsonObjects = entry[1];
+              console.log(this.userJsonObjects);
+              this.userJsonTitles = this.userJsonObjects.map(obj => obj.name);
+            }
+          );          
+        }
+      )
+    );
+  }
+
+  async fetchSampleJson() {
+    const sampleFilesDocRef = await this.firestore.doc('json_files/samples').get();
+    sampleFilesDocRef.subscribe(
+      (async snapShot => {
+          console.log(snapShot.data());
+          Object.entries(snapShot.data()).forEach(
+            (entry,_) => {
+              this.sampleJsonLocations = entry[1];
+              this.sampleJsonTitles = this.sampleJsonLocations.map(
+                (location: string) => location.split('/').pop()
+              );
+            }
+          );          
+        }
+      )
+    );
+  }
 }

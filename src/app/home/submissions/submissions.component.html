@@ -5,23 +5,20 @@
                 <div class="form-group">
                     <label for="file-input">Choose available data here: </label>
                     <select class="form-control" id="file-input">
-                        <option *ngFor='let sampleTitle of sampleJsonTitles'>{{ sampleTitle }}</option>
+                        <option disabled>Samples</option>
+                        <option *ngFor='let sampleJsonTitle of sampleJsonTitles'>{{ sampleJsonTitle }}</option>
+                        <ng-template [ngIf]='userDetails'>
+                            <option disabled >{{ userDetails.displayName }}</option>
+                            <option *ngFor='let userJsonTitle of userJsonTitles'>{{ userJsonTitle }}</option>
+                        </ng-template>
                     </select>
                       
                 </div>
             </form>
         </div>
         <div id='upload' class='col'>
-            <form>
-                <div class="form-group">
-                    <label for="file-upload">Upload your data here: </label>
-                    <input 
-                        type="file" 
-                        class="form-control-file" 
-                        id="file-upload">
-                </div>
-            </form>
-            <div *ngIf='!isAuthenticated' class='layer'>
+            <app-submission></app-submission>
+            <div *ngIf='!userDetails' class='layer'>
                 <h4>You have to sign in first ...</h4>
             </div>
         </div>

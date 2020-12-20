@@ -1,16 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import firebase from  'firebase/app';
 import 'firebase/firestore';
 import { Observable } from 'rxjs';
+import { UserModel } from '../shared/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public user: Observable<firebase.User>;
-  public userDetails;
+
+  userDetailsChanged = new EventEmitter<UserModel>();
+  private userDetails: UserModel = null;
+
   private userAuth: firebase.User = null;
 
   constructor(private firebaseAuth: AngularFireAuth,
@@ -20,6 +24,7 @@ export class AuthService {
       async (userAuth: firebase.User) => {
         this.userAuth = userAuth ? userAuth : null;
         this.userDetails = userAuth ? await this.fetchUserDocument() : null;
+        this.userDetailsChanged.emit(this.userDetails);
         console.log(this.userDetails);
       }
     );
@@ -80,7 +85,7 @@ export class AuthService {
     return userRef;
   }
 
-  async fetchUserDocument() {
+  async fetchUserDocument(): Promise<UserModel> {
     if (!this.userAuth) return;
 
     const userRef = firebase.firestore().doc(`users/${this.userAuth.uid}`);
@@ -88,9 +93,13 @@ export class AuthService {
 
     if (!snapShot.exists) return;
 
-    return {
-      id: snapShot.id,
-      ...snapShot.data(),
-    };
+    const { displayName, email, createdAt } = snapShot.data();
+
+    return new UserModel(
+      snapShot.id,
+      displayName,
+      email,
+      createdAt
+    );
   }
 }
