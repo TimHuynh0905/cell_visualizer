@@ -31,14 +31,15 @@ export class SubmissionsComponent implements OnInit {
       (newUserDetails: UserModel) => {
         this.userDetails = newUserDetails;
         console.log(this.userDetails);
-        if (this.userDetails) this.fetchUserJson(this.userDetails.id);
+        this.fetchUserJson();
       }
     );
     this.fetchSampleJson();
   }
 
-  async fetchUserJson(userID: string) {
-    const userFilesDocRef = await this.firestore.doc(`json_files/${userID}`).get();
+  async fetchUserJson() {
+    if (!this.userDetails) return;
+    const userFilesDocRef = await this.firestore.doc(`json_files/${this.userDetails.id}`).get();
     userFilesDocRef.subscribe(
       (async snapShot => {
           console.log(snapShot.data());
