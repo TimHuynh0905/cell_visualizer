@@ -1,7 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { AuthService } from 'src/app/authentication/auth.service';
-import { UserModel } from 'src/app/shared/user.model';
+import { AngularFirestoreDocument } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
 import { Observable } from 'rxjs';
 
