@@ -12,12 +12,11 @@
                             <option *ngFor='let userJsonTitle of userJsonTitles'>{{ userJsonTitle }}</option>
                         </ng-template>
                     </select>
-                      
                 </div>
             </form>
         </div>
         <div id='upload' class='col'>
-            <app-submission (newUserJsonObject)='onUserJsonObjectAdded($event)'></app-submission>
+            <app-submission [userDetails]='userDetails'></app-submission>
             <div *ngIf='!userDetails' class='layer'>
                 <h4>You have to sign in first ...</h4>
             </div>

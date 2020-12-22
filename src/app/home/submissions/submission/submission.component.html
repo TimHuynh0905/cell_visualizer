@@ -9,10 +9,26 @@
     </div>
     <button 
         [disabled]='uploadBtnDisabled' 
-        class='btn btn-primary mr-1' 
-        type='submit'
+        class='btn btn-primary mr-1 mb-2'
         (click)='onSubmit()'>
-            Upload
+        Upload
     </button>
-    <button class='btn btn-danger'>Cancel</button>
+
+    <button
+        *ngIf="uploadState | async; let state"
+        [disabled]="!(state === 'paused' || state === 'running')"
+        class='btn btn-danger mb-2'
+        (click)='onCancel()'>
+        Cancel
+    </button>
+    <div class="progress">
+        <div 
+            class="progress-bar progress-bar-striped bg-success" 
+            role="progressbar" 
+            [style.width]="(uploadProgress | async) + '%'" 
+            [attr.aria-valuenow]="(uploadProgress | async)" 
+            aria-valuemin="0" 
+            aria-valuemax="100">
+        </div>
+    </div>
 </form>
