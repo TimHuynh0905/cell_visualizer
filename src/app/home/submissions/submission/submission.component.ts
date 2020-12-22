@@ -18,6 +18,7 @@ export class SubmissionComponent implements OnInit {
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   uploadProgress: Observable<number>;
+  percent: number;
   uploadState: Observable<string>;
 
   @Input() userDetails: UserModel;
@@ -43,36 +44,42 @@ export class SubmissionComponent implements OnInit {
     this.uploadBtnDisabled = true;
     this.ref = this.firebaseStorage.ref(id);
     this.task = this.ref.put(this.fileToUpload);
-    this.uploadProgress = this.task.percentageChanges();
     this.uploadState = this.task.snapshotChanges().pipe(map(s => s.state));
+
+    this.uploadProgress = this.task.percentageChanges();
+    // this.uploadProgress.subscribe(x => {
+    //   this.percent = x;
+    // });
+
     this.task.then(
-        async (snapShot: UploadTaskSnapshot) => {
-          const { fullPath, name } = snapShot.ref;
-          const downloadUrl = await snapShot.ref.getDownloadURL();
-          this.submissionService.userFilesDocRef.subscribe(
-            async snapShot => {
-              if (!snapShot.exists) {
-                await this.submissionService.userFilesDocument.set({
-                  'fileArray': []
+      async (snapShot: UploadTaskSnapshot) => {
+        const { fullPath, name } = snapShot.ref;
+        const downloadUrl = await snapShot.ref.getDownloadURL();
+        this.submissionService.userFilesDocRef.subscribe(
+          async snapShot => {
+            if (!snapShot.exists) {
+              await this.submissionService.userFilesDocument.set({
+                'fileArray': []
+              });
+            }
+            Object.entries(snapShot.data()).forEach(
+              async (entry, _) => {
+                await this.submissionService.userFilesDocument.update({
+                  'fileArray':
+                    [
+                      { fullPath, name, downloadUrl },
+                      ...entry[1]
+                    ]
                 });
               }
-              Object.entries(snapShot.data()).forEach(
-                async (entry, _) => {
-                  await this.submissionService.userFilesDocument.update({
-                    'fileArray':
-                      [
-                        { fullPath, name, downloadUrl },
-                        ...entry[1]
-                      ]
-                  });
-                }
-              );
-            }
-          );
-          this.submissionService.addNewUserFile({ fullPath, name, downloadUrl });
-          (<HTMLInputElement>document.getElementById('file-upload')).value = '';
-        }    
+            );
+          }
+        );
+        this.submissionService.addNewUserFile({ fullPath, name, downloadUrl });
+      }    
     ).catch(e => console.log(e.message));
+
+    (<HTMLInputElement>document.getElementById('file-upload')).value = '';
   }
 
   onCancel() {
