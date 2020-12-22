@@ -18,8 +18,6 @@ export class SubmissionComponent implements OnInit {
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   uploadProgress: Observable<number>;
-  percent: number = 0;
-  full: boolean = false;
   uploadState: Observable<string>;
 
   @Input() userDetails: UserModel;
