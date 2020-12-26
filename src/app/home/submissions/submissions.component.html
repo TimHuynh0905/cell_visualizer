@@ -4,14 +4,20 @@
             <form>
                 <div class="form-group">
                     <label for="file-input">Choose available data here: </label>
-                    <select class="form-control" id="file-input">
+                    <select class="form-control mb-2" id="file-input" (change)="onChange($event)">
                         <option disabled>Samples</option>
                         <option *ngFor='let sampleJsonTitle of sampleJsonTitles'>{{ sampleJsonTitle }}</option>
                         <ng-template [ngIf]='userDetails'>
-                            <option disabled >{{ userDetails.displayName }}</option>
+                            <option disabled>{{ userDetails.displayName }}</option>
                             <option *ngFor='let userJsonTitle of userJsonTitles'>{{ userJsonTitle }}</option>
                         </ng-template>
                     </select>
+                    <button
+                        class='btn btn-primary mb-2'
+                        [disabled]='selectedTitle.length == 0'
+                        (click)='onLoadClicked()'>
+                        Load
+                    </button>
                 </div>
             </form>
         </div>

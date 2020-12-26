@@ -1,6 +1,7 @@
 import { AfterContentChecked, Component, OnInit } from '@angular/core';
 import { CellService } from '../cell/cell.service';
 import { MELANOMA } from '../../shared/melanoma';
+import { CellModel } from 'src/app/shared/component.model';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { MELANOMA } from '../../shared/melanoma';
 })
 
 export class DescriptionsComponent implements OnInit, AfterContentChecked {
-  components = MELANOMA;
+  currentJsonFile: CellModel[] = null;
   
   singleSelection: string = '';
 
@@ -23,6 +24,10 @@ export class DescriptionsComponent implements OnInit, AfterContentChecked {
   constructor(private cellService: CellService) {}
 
   ngOnInit() {
+    this.cellService.currentJsonFileChanged.subscribe(
+      (newFile: CellModel[]) => this.currentJsonFile = newFile
+    );
+
     this.singleSelection = this.cellService.getSingleSelection();
     this.cellService.singleSelectionChanged.subscribe(
       (component: string) => this.singleSelection = component
@@ -30,8 +35,8 @@ export class DescriptionsComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    if (this.singleSelection != '') {
-      const cellComponent = this.components.find(
+    if (this.currentJsonFile && this.singleSelection != '') {
+      const cellComponent = this.currentJsonFile.find(
         component => component.Title === this.singleSelection
       );
       if (cellComponent) {

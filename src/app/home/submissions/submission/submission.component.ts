@@ -59,20 +59,21 @@ export class SubmissionComponent implements OnInit {
           async snapShot => {
             if (!snapShot.exists) {
               await this.submissionService.userFilesDocument.set({
-                'fileArray': []
+                'fileArray': [ { fullPath, name, downloadUrl } ]
               });
+            } else {
+              Object.entries(snapShot.data()).forEach(
+                async (entry, _) => {
+                  await this.submissionService.userFilesDocument.update({
+                    'fileArray':
+                      [
+                        { fullPath, name, downloadUrl },
+                        ...entry[1]
+                      ]
+                  });
+                }
+              );
             }
-            Object.entries(snapShot.data()).forEach(
-              async (entry, _) => {
-                await this.submissionService.userFilesDocument.update({
-                  'fileArray':
-                    [
-                      { fullPath, name, downloadUrl },
-                      ...entry[1]
-                    ]
-                });
-              }
-            );
           }
         );
         this.submissionService.addNewUserFile({ fullPath, name, downloadUrl });

@@ -1,12 +1,15 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import * as d3 from 'd3';
+import { CellModel } from "src/app/shared/component.model";
 
 @Injectable()
 export class CellService {
+    currentJsonFileChanged = new EventEmitter<CellModel[]>();
     selectedComponentsChanged = new EventEmitter<string[]>();
     singleSelectionChanged = new EventEmitter<string>();
     svg = d3.select('#cell');
 
+    private currentJsonFile: CellModel[] = null;
     private selectedComponents: string[] = [];
     private singleSelection: string = '';
     private clearBtnClicked: boolean = false;
@@ -56,5 +59,10 @@ export class CellService {
 
     clearBtnClickedToggle() {
         this.clearBtnClicked = !this.clearBtnClicked;
+    }
+
+    setCurrentJsonFile(newSelectedFile: CellModel[]) {
+        this.currentJsonFile = newSelectedFile;
+        this.currentJsonFileChanged.emit(this.currentJsonFile);
     }
 }

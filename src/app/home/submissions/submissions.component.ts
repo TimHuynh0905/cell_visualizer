@@ -3,6 +3,8 @@ import { AuthService } from 'src/app/authentication/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { UserModel } from 'src/app/shared/user.model';
 import { SubmissionsService } from './submissions.service';
+import { CellModel } from 'src/app/shared/component.model';
+import { CellService } from '../cell/cell.service';
 
 @Component({
   selector: 'app-submissions',
@@ -23,9 +25,13 @@ export class SubmissionsComponent implements OnInit {
     name: string
   }[] = [];
 
+  selectedTitle: string = '';
+  newSelectedJsonFile: CellModel[] = null;
+
   constructor(private authService: AuthService,
               private firestore: AngularFirestore,
-              private submissionService: SubmissionsService) { }
+              private submissionService: SubmissionsService,
+              private cellService: CellService) { }
 
   ngOnInit() {
     this.authService.userDetailsChanged.subscribe(
@@ -66,7 +72,32 @@ export class SubmissionsComponent implements OnInit {
         this.sampleJsonTitles = this.sampleJsonLocations.map(
           (location: string) => location.split('/').pop()
         );
+        this.selectedTitle = this.sampleJsonTitles.length > 0 ? this.sampleJsonTitles[0] : '';
       });          
     });
+  }
+
+  onChange(event: Event) {
+    this.selectedTitle = (<HTMLInputElement>event.target).value;
+  }
+
+  onLoadClicked() {
+    const selectedObject = this.userJsonObjects.find(
+      (object: {
+        downloadUrl: string,
+        fullPath: string,
+        name: string
+      }) => object.name === this.selectedTitle
+    );
+
+    console.log(selectedObject.downloadUrl);
+    fetch(selectedObject.downloadUrl)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        this.newSelectedJsonFile = data;
+        this.cellService.setCurrentJsonFile(this.newSelectedJsonFile);
+      })
+      .catch(e => console.log(e));
   }
 }

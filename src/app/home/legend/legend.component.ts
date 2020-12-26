@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CellService } from '../cell/cell.service';
-import { MELANOMA } from '../../shared/melanoma';
+import { CellModel } from 'src/app/shared/component.model';
 
 @Component({
   selector: 'app-legend',
@@ -8,16 +8,25 @@ import { MELANOMA } from '../../shared/melanoma';
   styleUrls: ['./legend.component.css']
 })
 export class LegendComponent implements OnInit {
-  components = MELANOMA;
-  maxLog: number = -1;
+  maxLog: number = null;
 
   constructor(private cellService: CellService) {}
 
   ngOnInit() {
-    this.components.forEach(
-      component => this.maxLog = component.log_min_pval && this.maxLog < component.log_min_pval
-        ? parseFloat(component.log_min_pval.toFixed(2)) 
-        : parseFloat(this.maxLog.toFixed(2))
+    this.cellService.currentJsonFileChanged.subscribe(
+      (newFile: CellModel[]) => {
+        if (newFile) {
+          let max = 0;
+          newFile.forEach(
+            component => {
+              if (component.log_min_pval && max < component.log_min_pval) {
+                max = parseFloat(component.log_min_pval.toFixed(2));
+              }
+            }
+          );
+          this.maxLog = max;
+        }
+      }
     );
   }
 }
