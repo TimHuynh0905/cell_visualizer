@@ -14,6 +14,7 @@ import { SubmissionsService } from '../submissions.service';
 export class SubmissionComponent implements OnInit {
   uploadBtnDisabled: boolean = true;
   fileToUpload: File;
+  userJsonTitles: string[] = [];
 
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
@@ -26,7 +27,11 @@ export class SubmissionComponent implements OnInit {
   constructor(private firebaseStorage: AngularFireStorage,
               private submissionService: SubmissionsService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.submissionService.userJsonTitlesChanged.subscribe(
+      (titles: string[]) => this.userJsonTitles = titles
+    );
+  }
 
   onFileChange(event: Event) {
     if ((<HTMLInputElement>event.target).files.length <= 0) {
@@ -40,7 +45,8 @@ export class SubmissionComponent implements OnInit {
   }
 
   onSubmit() {
-    const id = `json_files/${this.userDetails.displayName}/${this.fileToUpload.name}`;
+    let id = `json_files/${this.userDetails.displayName}/${this.generateNewFileTitle(this.fileToUpload.name)}`;
+
     this.uploadBtnDisabled = true;
     this.ref = this.firebaseStorage.ref(id);
     this.task = this.ref.put(this.fileToUpload);
@@ -85,5 +91,20 @@ export class SubmissionComponent implements OnInit {
 
   onCancel() {
     this.task.cancel();
+  }
+
+  generateNewFileTitle(titleToAdd: string) {
+    let counter = 0;
+    this.userJsonTitles.forEach(
+      (title: string) => 
+        counter = title === titleToAdd ? counter + 1 : counter
+    );
+    console.log(counter);
+
+    if (counter > 0) {
+      const currentTitleParts = titleToAdd.split('.');
+      return currentTitleParts[0] + '_' + counter + '.' + currentTitleParts[1];
+    }
+    return titleToAdd;
   }
 }

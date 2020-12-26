@@ -2,7 +2,8 @@
     <div class="form-group">
         <label for="file-upload">Upload your data here: </label>
         <input 
-            type="file" 
+            type="file"
+            accept="application/JSON" 
             class="form-control-file" 
             id="file-upload"
             (change)="onFileChange($event)">

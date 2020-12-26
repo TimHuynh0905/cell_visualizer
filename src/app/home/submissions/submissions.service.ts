@@ -29,6 +29,7 @@ export class SubmissionsService {
   fetchUserJson() {
     this.userFilesDocRef.subscribe(
       (snapShot => {
+        if (snapShot.data() != null) {
           console.log(snapShot.data());
           Object.entries(snapShot.data()).forEach(
             (entry,_) => {
@@ -38,9 +39,9 @@ export class SubmissionsService {
               this.userJsonTitlesChanged.emit(this.userJsonTitles);
               this.userJsonObjectsChanged.emit(this.userJsonObjects);
             }
-          );          
-        }
-      )
+          );    
+        }      
+      })
     );
   }
 
