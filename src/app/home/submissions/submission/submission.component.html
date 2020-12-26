@@ -3,18 +3,29 @@
         <label for="file-upload">Upload your data here: </label>
         <input 
             type="file"
-            accept="application/JSON" 
+            accept=".csv, text/csv" 
             class="form-control-file" 
             id="file-upload"
             (change)="onFileChange($event)">
     </div>
+    <div class='group'>
+        <input 
+            class='form-input'
+            type='input'
+            id='filename'
+            name='fileName'
+            [(ngModel)]='filenameInput'>
+        <label 
+            [ngClass]="filenameInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
+            File Name
+        </label>
+    </div>
     <button 
-        [disabled]='uploadBtnDisabled' 
+        [disabled]='fileDNE || filenameInput.length == 0' 
         class='btn btn-primary mr-1 mb-2'
         (click)='onSubmit()'>
         Upload
     </button>
-
     <button
         *ngIf="uploadState | async; let state"
         [disabled]="!(state === 'paused' || state === 'running')"

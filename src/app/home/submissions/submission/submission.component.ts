@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { UploadTaskSnapshot } from '@angular/fire/storage/interfaces';
+import { json } from 'd3';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/shared/user.model';
@@ -12,8 +13,10 @@ import { SubmissionsService } from '../submissions.service';
   styleUrls: ['./submission.component.css']
 })
 export class SubmissionComponent implements OnInit {
-  uploadBtnDisabled: boolean = true;
+  filenameInput: string = '';
+  fileDNE: boolean = true;
   fileToUpload: File;
+
   userJsonTitles: string[] = [];
 
   ref: AngularFireStorageReference;
@@ -35,21 +38,46 @@ export class SubmissionComponent implements OnInit {
 
   onFileChange(event: Event) {
     if ((<HTMLInputElement>event.target).files.length <= 0) {
-      this.uploadBtnDisabled = true;
+      this.fileDNE = true;
       return;
     }
 
-    this.uploadBtnDisabled = false;
+    this.fileDNE = false;
     this.fileToUpload = (<HTMLInputElement>event.target).files[0];
     console.log(this.fileToUpload);
   }
 
-  onSubmit() {
-    let id = `json_files/${this.userDetails.displayName}/${this.generateNewFileTitle(this.fileToUpload.name)}`;
+  async onSubmit() {
+    const jsonData = await this.generateJsonData(this.fileToUpload);
+    const fileName = this.filenameInput.trim().replace(/\s+/g, '_')
+    const file = new File([JSON.stringify(jsonData)], `${fileName}.json`, { type: 'application/json'});
+    console.log(file);
+    this.uploadToFireStorage(file)
+  }
 
-    this.uploadBtnDisabled = true;
+  async generateJsonData(csvFile: File) {
+    const formData = new FormData();
+    formData.append('csv_file', csvFile);
+
+    let jsonData = []
+
+    await fetch('http://localhost:5000/upload_csv', {
+      method: 'POST',
+      body: formData
+    }).then(
+      resp => resp.json()
+    ).then(data => jsonData = data.json_data
+    ).catch(err => console.log(err));
+
+    return jsonData;
+  }
+
+  uploadToFireStorage(file: File) {
+    let id = `json_files/${this.userDetails.displayName}/${this.generateNewFileTitle(file.name)}`;
+
+    this.fileDNE = true;
     this.ref = this.firebaseStorage.ref(id);
-    this.task = this.ref.put(this.fileToUpload);
+    this.task = this.ref.put(file);
     this.uploadState = this.task.snapshotChanges().pipe(map(s => s.state));
 
     this.uploadProgress = this.task.percentageChanges();
@@ -64,6 +92,7 @@ export class SubmissionComponent implements OnInit {
         this.submissionService.userFilesDocRef.subscribe(
           async snapShot => {
             if (!snapShot.exists) {
+              console.log('create the first array element');
               await this.submissionService.userFilesDocument.set({
                 'fileArray': [ { fullPath, name, downloadUrl } ]
               });
@@ -99,7 +128,7 @@ export class SubmissionComponent implements OnInit {
       (title: string) => 
         counter = title === titleToAdd ? counter + 1 : counter
     );
-    console.log(counter);
+    // console.log(counter);
 
     if (counter > 0) {
       const currentTitleParts = titleToAdd.split('.');

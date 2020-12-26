@@ -5,6 +5,7 @@
             class='form-input'
             type='email'
             id='email'
+            name='Email'
             [(ngModel)]='emailInput'>
         <label 
             [ngClass]="emailInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
@@ -16,6 +17,7 @@
             class='form-input'
             type='password'
             id='password'
+            name='Password'
             [(ngModel)]='passwordInput'>
         <label 
             [ngClass]="passwordInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">

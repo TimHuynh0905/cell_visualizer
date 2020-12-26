@@ -15,9 +15,6 @@ import { CellService } from '../cell/cell.service';
 export class SubmissionsComponent implements OnInit {
   userDetails: UserModel = null;
 
-  sampleJsonTitles: string[] = [];
-  sampleJsonLocations: string[] = [];
-
   userJsonTitles: string[] = [];
   userJsonObjects: {
     downloadUrl: string,
@@ -47,7 +44,10 @@ export class SubmissionsComponent implements OnInit {
     );
 
     this.submissionService.userJsonTitlesChanged.subscribe(
-      (titles: string[]) => this.userJsonTitles = titles
+      (titles: string[]) => {
+        this.userJsonTitles = titles;
+        this.selectedTitle = this.userJsonTitles[0];
+      }
     );
 
     this.submissionService.userJsonObjectsChanged.subscribe(
@@ -60,24 +60,9 @@ export class SubmissionsComponent implements OnInit {
         console.log(this.userJsonObjects);
       }
     );
-
-    this.fetchSampleJson();
   }
-
-  fetchSampleJson() {
-    this.firestore.doc('json_files/samples').get().subscribe(snapShot => {
-      console.log(snapShot.data());
-      Object.entries(snapShot.data()).forEach( (entry,_) => {
-        this.sampleJsonLocations = entry[1];
-        this.sampleJsonTitles = this.sampleJsonLocations.map(
-          (location: string) => location.split('/').pop()
-        );
-        this.selectedTitle = this.sampleJsonTitles.length > 0 ? this.sampleJsonTitles[0] : '';
-      });          
-    });
-  }
-
   onChange(event: Event) {
+    console.log((<HTMLInputElement>event.target).value);
     this.selectedTitle = (<HTMLInputElement>event.target).value;
   }
 
@@ -92,12 +77,12 @@ export class SubmissionsComponent implements OnInit {
 
     console.log(selectedObject.downloadUrl);
     fetch(selectedObject.downloadUrl)
-      .then(response => response.json())
+      .then(resp => resp.json())
       .then(data => {
-        console.log(data);
-        this.newSelectedJsonFile = data;
+        console.log(JSON.parse(data));
+        this.newSelectedJsonFile = JSON.parse(data);
         this.cellService.setCurrentJsonFile(this.newSelectedJsonFile);
       })
-      .catch(e => console.log(e));
+      .catch(err => console.log(err));
   }
 }
