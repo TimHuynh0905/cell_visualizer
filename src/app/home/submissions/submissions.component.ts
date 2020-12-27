@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/authentication/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { UserModel } from 'src/app/shared/user.model';
-import { SubmissionsService } from './submissions.service';
-import { CellModel } from 'src/app/shared/component.model';
+import { UserModel } from 'src/app/shared/models/user.model';
+import { StorageService } from './storage.service';
 import { CellService } from '../cell/cell.service';
+import { JsonValueModel } from 'src/app/shared/models/json.model';
 
 @Component({
   selector: 'app-submissions',
   templateUrl: './submissions.component.html',
   styleUrls: ['./submissions.component.css'],
-  providers: [ SubmissionsService ],
+  providers: [ StorageService ],
 })
 export class SubmissionsComponent implements OnInit {
   userDetails: UserModel = null;
@@ -23,11 +23,11 @@ export class SubmissionsComponent implements OnInit {
   }[] = [];
 
   selectedTitle: string = '';
-  newSelectedJsonFile: CellModel[] = null;
+  newSelectedJsonFile: JsonValueModel[] = null;
 
   constructor(private authService: AuthService,
               private firestore: AngularFirestore,
-              private submissionService: SubmissionsService,
+              private storageService: StorageService,
               private cellService: CellService) { }
 
   ngOnInit() {
@@ -36,28 +36,21 @@ export class SubmissionsComponent implements OnInit {
         this.userDetails = newUserDetails;
         console.log(this.userDetails);
         if (this.userDetails) {
-          this.submissionService.userFilesDocument = this.firestore.doc(`json_files/${this.userDetails.id}`)
-          this.submissionService.userFilesDocRef = this.submissionService.userFilesDocument.get();
-          this.submissionService.fetchUserJson();
+          this.storageService.userFilesDocument = this.firestore.doc(`json_files/${this.userDetails.id}`)
+          this.storageService.userFilesDocRef = this.storageService.userFilesDocument.get();
+          this.storageService.fetchUserJson();
         }
       }
     );
 
-    this.submissionService.userJsonTitlesChanged.subscribe(
-      (titles: string[]) => {
-        this.userJsonTitles = titles;
-        this.selectedTitle = this.userJsonTitles[0];
-      }
-    );
-
-    this.submissionService.userJsonObjectsChanged.subscribe(
+    this.storageService.userJsonObjectsChanged.subscribe(
       (objects: {
         downloadUrl: string,
         fullPath: string,
         name: string
       }[]) => {
         this.userJsonObjects = objects;
-        console.log(this.userJsonObjects);
+        this.userJsonTitles = objects.map(obj => obj.name);
       }
     );
   }

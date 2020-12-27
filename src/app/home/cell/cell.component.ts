@@ -1,9 +1,7 @@
 import { AfterContentChecked, AfterContentInit, Component, OnInit } from '@angular/core';
-import { MELANOMA } from '../../shared/melanoma';
 import * as d3 from 'd3';
-import { ComponentTitles } from '../../shared/cell.model';
+import { JsonKeyModel, JsonValueModel } from '../../shared/models/json.model';
 import { CellService } from './cell.service';
-import { CellModel } from 'src/app/shared/component.model';
 
 
 @Component({
@@ -13,8 +11,8 @@ import { CellModel } from 'src/app/shared/component.model';
 })
 
 export class CellComponent implements OnInit, AfterContentInit, AfterContentChecked {
-  currentJsonFile: CellModel[];
-  colorMaps: ComponentTitles = new ComponentTitles();
+  currentJsonFile: JsonValueModel[];
+  colorMaps: JsonKeyModel = new JsonKeyModel();
   svg = d3.select('#cell');
   selectedComponents: string[] = [];  
 
@@ -23,17 +21,17 @@ export class CellComponent implements OnInit, AfterContentInit, AfterContentChec
   ngOnInit() {
     const cyanMagentaScale = d3.interpolateLab('cyan', 'magenta');
     this.cellService.currentJsonFileChanged.subscribe(
-      (newFile: CellModel[]) => {
+      (newFile: JsonValueModel[]) => {
         this.currentJsonFile = newFile;
         this.currentJsonFile.forEach(
-          (component: CellModel) => this.colorMaps[component.Title] = component.interpolate ? cyanMagentaScale(component.interpolate) : 'white'
+          (component: JsonValueModel) => this.colorMaps[component.Title] = component.interpolate ? cyanMagentaScale(component.interpolate) : 'white'
         );
       }
     );
     
     if (this.currentJsonFile) {
       this.currentJsonFile.forEach(
-        (component: CellModel) => this.colorMaps[component.Title] = component.interpolate ? cyanMagentaScale(component.interpolate) : 'white'
+        (component: JsonValueModel) => this.colorMaps[component.Title] = component.interpolate ? cyanMagentaScale(component.interpolate) : 'white'
       );
     }
 

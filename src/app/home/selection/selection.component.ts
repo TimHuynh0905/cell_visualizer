@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CellService } from '../cell/cell.service';
-import { MELANOMA } from '../../shared/melanoma';
-import { MAP } from 'src/app/shared/titleMap';
+import { MAP } from 'src/app/shared/title.map';
 
 @Component({
   selector: 'app-selection',
@@ -9,7 +8,6 @@ import { MAP } from 'src/app/shared/titleMap';
   styleUrls: ['./selection.component.css']
 })
 export class SelectionComponent implements OnInit {
-  components = MELANOMA;
   selectedComponents: string[];
   singleSelection: string;
   map = MAP;

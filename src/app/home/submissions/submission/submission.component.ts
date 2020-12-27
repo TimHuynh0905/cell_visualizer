@@ -4,8 +4,8 @@ import { UploadTaskSnapshot } from '@angular/fire/storage/interfaces';
 import { json } from 'd3';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserModel } from 'src/app/shared/user.model';
-import { SubmissionsService } from '../submissions.service';
+import { UserModel } from 'src/app/shared/models/user.model';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-submission',
@@ -28,11 +28,17 @@ export class SubmissionComponent implements OnInit {
   @Input() userDetails: UserModel;
 
   constructor(private firebaseStorage: AngularFireStorage,
-              private submissionService: SubmissionsService) { }
+              private storageService: StorageService) { }
 
   ngOnInit() {
-    this.submissionService.userJsonTitlesChanged.subscribe(
-      (titles: string[]) => this.userJsonTitles = titles
+    this.storageService.userJsonObjectsChanged.subscribe(
+      (objects: {
+        downloadUrl: string,
+        fullPath: string,
+        name: string
+      }[]) => {
+        this.userJsonTitles = objects.map(obj => obj.name);
+      }
     );
   }
 
@@ -89,29 +95,24 @@ export class SubmissionComponent implements OnInit {
       async (snapShot: UploadTaskSnapshot) => {
         const { fullPath, name } = snapShot.ref;
         const downloadUrl = await snapShot.ref.getDownloadURL();
-        this.submissionService.userFilesDocRef.subscribe(
+        this.storageService.userFilesDocRef.subscribe(
           async snapShot => {
             if (!snapShot.exists) {
-              console.log('create the first array element');
-              await this.submissionService.userFilesDocument.set({
+              await this.storageService.userFilesDocument.set({
                 'fileArray': [ { fullPath, name, downloadUrl } ]
               });
             } else {
-              Object.entries(snapShot.data()).forEach(
-                async (entry, _) => {
-                  await this.submissionService.userFilesDocument.update({
-                    'fileArray':
-                      [
-                        { fullPath, name, downloadUrl },
-                        ...entry[1]
-                      ]
-                  });
-                }
-              );
+              await this.storageService.userFilesDocument.update({
+                'fileArray':
+                  [
+                    { fullPath, name, downloadUrl },
+                    ...Object.entries(snapShot.data())[0][1]
+                  ]
+              });
             }
+            this.storageService.addNewUserFile({ fullPath, name, downloadUrl });
           }
         );
-        this.submissionService.addNewUserFile({ fullPath, name, downloadUrl });
       }    
     ).catch(e => console.log(e.message));
 

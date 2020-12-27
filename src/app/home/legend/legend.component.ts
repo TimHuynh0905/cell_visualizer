@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JsonValueModel } from 'src/app/shared/models/json.model';
 import { CellService } from '../cell/cell.service';
-import { CellModel } from 'src/app/shared/component.model';
 
 @Component({
   selector: 'app-legend',
@@ -14,7 +14,7 @@ export class LegendComponent implements OnInit {
 
   ngOnInit() {
     this.cellService.currentJsonFileChanged.subscribe(
-      (newFile: CellModel[]) => {
+      (newFile: JsonValueModel[]) => {
         if (newFile) {
           let max = 0;
           newFile.forEach(

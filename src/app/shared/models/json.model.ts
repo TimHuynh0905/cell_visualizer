@@ -1,4 +1,4 @@
-export class ComponentTitles {
+export class JsonKeyModel {
     constructor(
         public actin_filament: string = '',
         public centrosome: string = '',
@@ -24,5 +24,15 @@ export class ComponentTitles {
         public plasma_membrane: string = '',
         public rods_and_ring: string = '',
         public secreted_protein: string = ''
+    ) {}
+}
+
+export class JsonValueModel {
+    constructor(
+        public Title: string = '',
+        public ID: string = '',
+        public min_pval: number = null,
+        public log_min_pval: number = null,
+        public interpolate: number = null,
     ) {}
 }

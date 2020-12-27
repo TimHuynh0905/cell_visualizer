@@ -6,18 +6,16 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class SubmissionsService {
+export class StorageService {
   userFilesDocument: AngularFirestoreDocument<unknown>;
   userFilesDocRef: Observable<firebase.firestore.DocumentSnapshot<unknown>>;
   
-  private userJsonTitles: string[] = [];
   private userJsonObjects: {
     downloadUrl: string,
     fullPath: string,
     name: string
   }[] = [];
 
-  userJsonTitlesChanged = new EventEmitter<string[]>();
   userJsonObjectsChanged = new EventEmitter<{
     downloadUrl: string,
     fullPath: string,
@@ -30,16 +28,9 @@ export class SubmissionsService {
     this.userFilesDocRef.subscribe(
       (snapShot => {
         if (snapShot.data() != null) {
-          console.log(snapShot.data());
-          Object.entries(snapShot.data()).forEach(
-            (entry,_) => {
-              this.userJsonObjects = entry[1];
-              this.userJsonTitles = this.userJsonObjects.map(obj => obj.name);
-
-              this.userJsonTitlesChanged.emit(this.userJsonTitles);
-              this.userJsonObjectsChanged.emit(this.userJsonObjects);
-            }
-          );    
+          console.log(Object.entries(snapShot.data())[0][1]);
+          this.userJsonObjects = Object.entries(snapShot.data())[0][1];
+          this.userJsonObjectsChanged.emit(this.userJsonObjects);
         }      
       })
     );
@@ -51,9 +42,6 @@ export class SubmissionsService {
     name: string
   }) {
     this.userJsonObjects.unshift(newObject);
-    this.userJsonTitles.unshift(newObject.name);
-
-    this.userJsonTitlesChanged.emit(this.userJsonTitles);
     this.userJsonObjectsChanged.emit(this.userJsonObjects);
   }
 }

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import firebase from  'firebase/app';
 import 'firebase/firestore';
 import { Observable } from 'rxjs';
-import { UserModel } from '../shared/user.model';
+import { UserModel } from '../shared/models/user.model';
 
 @Injectable({
   providedIn: 'root'
