@@ -51,6 +51,7 @@ export class SubmissionsComponent implements OnInit {
       }[]) => {
         this.userJsonObjects = objects;
         this.userJsonTitles = objects.map(obj => obj.name);
+        this.selectedTitle = this.userJsonTitles[0];
       }
     );
   }

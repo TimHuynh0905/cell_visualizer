@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { UploadTaskSnapshot } from '@angular/fire/storage/interfaces';
-import { json } from 'd3';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/shared/models/user.model';
@@ -55,7 +54,8 @@ export class SubmissionComponent implements OnInit {
 
   async onSubmit() {
     const jsonData = await this.generateJsonData(this.fileToUpload);
-    const fileName = this.filenameInput.trim().replace(/\s+/g, '_')
+    let fileName = this.fileToUpload.name.split('.')[0];
+    if (this.filenameInput.length > 0) fileName = this.filenameInput.trim().replace(/\s+/g, '_');
     const file = new File([JSON.stringify(jsonData)], `${fileName}.json`, { type: 'application/json'});
     console.log(file);
     this.uploadToFireStorage(file)
@@ -100,7 +100,9 @@ export class SubmissionComponent implements OnInit {
             if (!snapShot.exists) {
               await this.storageService.userFilesDocument.set({
                 'fileArray': [ { fullPath, name, downloadUrl } ]
-              });
+              }).then(() => {
+                this.storageService.addNewUserFile({ fullPath, name, downloadUrl });
+              }).catch(err => console.log(err));
             } else {
               await this.storageService.userFilesDocument.update({
                 'fileArray':
@@ -108,15 +110,17 @@ export class SubmissionComponent implements OnInit {
                     { fullPath, name, downloadUrl },
                     ...Object.entries(snapShot.data())[0][1]
                   ]
-              });
+              }).then(() => {
+                this.storageService.addNewUserFile({ fullPath, name, downloadUrl });
+              }).catch(err => console.log(err));
             }
-            this.storageService.addNewUserFile({ fullPath, name, downloadUrl });
           }
         );
       }    
     ).catch(e => console.log(e.message));
 
     (<HTMLInputElement>document.getElementById('file-upload')).value = '';
+    this.filenameInput = '';
   }
 
   onCancel() {
@@ -124,17 +128,6 @@ export class SubmissionComponent implements OnInit {
   }
 
   generateNewFileTitle(titleToAdd: string) {
-    let counter = 0;
-    this.userJsonTitles.forEach(
-      (title: string) => 
-        counter = title === titleToAdd ? counter + 1 : counter
-    );
-    // console.log(counter);
-
-    if (counter > 0) {
-      const currentTitleParts = titleToAdd.split('.');
-      return currentTitleParts[0] + '_' + counter + '.' + currentTitleParts[1];
-    }
-    return titleToAdd;
+    return `${Date.now()}-${titleToAdd}`;
   }
 }

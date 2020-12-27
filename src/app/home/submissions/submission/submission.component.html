@@ -17,11 +17,11 @@
             [(ngModel)]='filenameInput'>
         <label 
             [ngClass]="filenameInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
-            File Name
+            File Name (Optional)
         </label>
     </div>
     <button 
-        [disabled]='fileDNE || filenameInput.length == 0' 
+        [disabled]='fileDNE' 
         class='btn btn-primary mr-1 mb-2'
         (click)='onSubmit()'>
         Upload
