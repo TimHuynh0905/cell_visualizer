@@ -67,7 +67,7 @@ export class SubmissionComponent implements OnInit {
 
     let jsonData = []
 
-    await fetch('http://localhost:5000/upload_csv', {
+    await fetch('https://cell-visualizer.herokuapp.com/upload_csv', {
       method: 'POST',
       body: formData
     }).then(
