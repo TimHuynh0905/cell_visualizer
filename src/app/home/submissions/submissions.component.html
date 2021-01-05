@@ -20,9 +20,13 @@
             </form>
         </div>
         <div id='upload' class='col'>
-            <app-submission [userDetails]='userDetails'></app-submission>
+            <app-submission (setLoading)='setLoadingState($event)' class='submission-form' [userDetails]='userDetails'></app-submission>
             <div *ngIf='!userDetails' class='layer'>
                 <h4>You have to sign in first ...</h4>
+            </div>
+            <div *ngIf='isLoading' class='layer-spinner' style='text-align: center;'>
+                <app-loading-spinner></app-loading-spinner>
+                <h5>Generating json from data ...</h5>
             </div>
         </div>
     </div>

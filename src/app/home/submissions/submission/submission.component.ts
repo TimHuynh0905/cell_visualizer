@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { UploadTaskSnapshot } from '@angular/fire/storage/interfaces';
 import { Observable } from 'rxjs';
@@ -12,6 +12,8 @@ import { StorageService } from '../storage.service';
   styleUrls: ['./submission.component.css']
 })
 export class SubmissionComponent implements OnInit {
+  @Output() setLoading = new EventEmitter<boolean>() ;
+
   filenameInput: string = '';
   fileDNE: boolean = true;
   fileToUpload: File;
@@ -54,11 +56,16 @@ export class SubmissionComponent implements OnInit {
 
   async onSubmit() {
     const jsonData = await this.generateJsonData(this.fileToUpload);
+    console.log(jsonData);
     let fileName = this.fileToUpload.name.split('.')[0];
     if (this.filenameInput.length > 0) fileName = this.filenameInput.trim().replace(/\s+/g, '_');
     const file = new File([JSON.stringify(jsonData)], `${fileName}.json`, { type: 'application/json'});
     console.log(file);
-    this.uploadToFireStorage(file)
+    if (jsonData.length > 0) this.uploadToFireStorage(file);
+    else {
+      alert('something went wrong!');
+      console.log(jsonData);
+    }
   }
 
   async generateJsonData(csvFile: File) {
@@ -67,22 +74,28 @@ export class SubmissionComponent implements OnInit {
 
     let jsonData = []
 
+    this.setLoading.emit(true);
     await fetch('https://cell-visualizer.herokuapp.com/upload_csv', {
       method: 'POST',
       body: formData
     }).then(
       resp => resp.json()
-    ).then(data => jsonData = data.json_data
+    ).then(data => {
+      jsonData = data.json_data;
+      this.setLoading.emit(false);
+    }
     ).catch(err => {
       alert(err);
       console.log(err);
+      this.setLoading.emit(false);
     });
 
     return jsonData;
   }
 
   uploadToFireStorage(file: File) {
-    let id = `json_files/${this.userDetails.displayName}/${this.generateNewFileTitle(file.name)}`;
+    console.log(this.userDetails)
+    let id = `json_files/${this.userDetails.id}/${this.generateNewFileTitle(file.name)}`;
 
     this.fileDNE = true;
     this.ref = this.firebaseStorage.ref(id);
@@ -90,10 +103,7 @@ export class SubmissionComponent implements OnInit {
     this.uploadState = this.task.snapshotChanges().pipe(map(s => s.state));
 
     this.uploadProgress = this.task.percentageChanges();
-    // this.uploadProgress.subscribe(x => {
-    //   this.percent = x;
-    // });
-
+    
     this.task.then(
       async (snapShot: UploadTaskSnapshot) => {
         const { fullPath, name } = snapShot.ref;

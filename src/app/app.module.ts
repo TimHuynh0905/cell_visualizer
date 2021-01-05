@@ -13,11 +13,13 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FirebaseModule } from './firebase.module';
 import { AuthService } from './authentication/auth.service';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent
+    NavbarComponent,
+    // LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,7 @@ import { SubmissionComponent } from './home/submissions/submission/submission.co
 import { HomeComponent } from './home/home.component';
 import { SigninComponent } from './authentication/signin/signin.component';
 import { SignupComponent } from './authentication/signup/signup.component';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 
 export const COMPONENTS = [
     CellComponent,
@@ -24,6 +25,7 @@ export const COMPONENTS = [
     HomeComponent,
     SigninComponent,
     SignupComponent,
+    LoadingSpinnerComponent
 ];
 
 @NgModule({

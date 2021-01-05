@@ -14,6 +14,7 @@ import { JsonValueModel } from 'src/app/shared/models/json.model';
 })
 export class SubmissionsComponent implements OnInit {
   userDetails: UserModel = null;
+  isLoading: boolean = false;
 
   userJsonTitles: string[] = [];
   userJsonObjects: {
@@ -81,5 +82,10 @@ export class SubmissionsComponent implements OnInit {
         alert(err);
         console.log(err);
       });
+  }
+
+  setLoadingState(event: boolean) {
+    console.log(event);
+    this.isLoading = event;
   }
 }

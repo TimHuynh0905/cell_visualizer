@@ -1,4 +1,4 @@
-<form>
+<form #submitForm='ngForm' (ngSubmit)='onSubmit()'>
     <div class="form-group">
         <label for="file-upload">Upload your data here: </label>
         <input 
@@ -23,7 +23,7 @@
     <button 
         [disabled]='fileDNE' 
         class='btn btn-primary mr-1 mb-2'
-        (click)='onSubmit()'>
+        type='submit'>
         Upload
     </button>
     <button

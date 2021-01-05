@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import firebase from  'firebase/app';
 import 'firebase/firestore';
@@ -10,7 +11,7 @@ import { UserModel } from '../shared/models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  public user: Observable<firebase.User>;
+  public user: Observable<firebase.User> = this.firebaseAuth.authState;
 
   userDetailsChanged = new EventEmitter<UserModel>();
   private userDetails: UserModel = null;
@@ -18,10 +19,12 @@ export class AuthService {
   private userAuth: firebase.User = null;
 
   constructor(private firebaseAuth: AngularFireAuth,
+              private firestore: AngularFirestore,
               private router: Router) {
-    this.user = firebaseAuth.authState;
+    // this.user = firebaseAuth.authState;
     this.user.subscribe(
       async (userAuth: firebase.User) => {
+        console.log(userAuth);
         this.userAuth = userAuth ? userAuth : null;
         this.userDetails = userAuth ? await this.fetchUserDocument() : null;
         this.userDetailsChanged.emit(this.userDetails);
@@ -57,32 +60,49 @@ export class AuthService {
       .then(async (userCredential: firebase.auth.UserCredential) => {
         const { user } = userCredential;
         console.log(user);
-        await this.createUserProfileDocument(user, username);
+        await this.createUserProfileDocument(user, { displayName: username });
         this.router.navigate(['/signin']);
       })
-      .catch(e => console.log(e.message));
+      .catch(e => {
+        alert(e.message);
+        console.log(e.message)
+      });
   }
 
-  async createUserProfileDocument(userAuth, additionalData) {
+  async createUserProfileDocument(userAuth: firebase.User, additionalData: any) {
     if (!userAuth) return;
+  
+    const userDocument = this.firestore.doc(`users/${userAuth.uid}`);
+    const userRef = userDocument.get();
 
-    const userRef = firebase.firestore().doc(`users/${userAuth.uid}`);
-    const snapShot = await userRef.get();
+    const id = userAuth.uid
+    const { email } = userAuth;
+    const { displayName } = additionalData;
+    const createdAt = new Date();
 
-    if (!snapShot.exists) {
-        const { email } = userAuth;
-        const createdAt = new Date();
-        try {
-            await userRef.set({
+    userRef.subscribe(
+      async snapShot => {
+        if (!snapShot.exists) {
+          try {
+            await userDocument.set({
               email,
               createdAt,
-              ...additionalData 
+              displayName
             });
-        } catch (e) {
-            console.log('error creating user', e.message);
+            this.userDetails = new UserModel(
+              id,
+              displayName,
+              email,
+              createdAt
+            );
+            this.userDetailsChanged.emit(this.userDetails);
+          } catch (error) {
+            alert(error.message);
+            console.log(error.message);
+          };
         }
-    }
-    return userRef;
+      }
+    );
   }
 
   async fetchUserDocument(): Promise<UserModel> {
@@ -100,6 +120,6 @@ export class AuthService {
       displayName,
       email,
       createdAt
-    );
+    )
   }
 }
