@@ -73,7 +73,10 @@ export class SubmissionComponent implements OnInit {
     }).then(
       resp => resp.json()
     ).then(data => jsonData = data.json_data
-    ).catch(err => console.log(err));
+    ).catch(err => {
+      alert(err);
+      console.log(err);
+    });
 
     return jsonData;
   }
@@ -102,7 +105,10 @@ export class SubmissionComponent implements OnInit {
                 'fileArray': [ { fullPath, name, downloadUrl } ]
               }).then(() => {
                 this.storageService.addNewUserFile({ fullPath, name, downloadUrl });
-              }).catch(err => console.log(err));
+              }).catch(err => {
+                alert(err);
+                console.log(err);
+              });
             } else {
               await this.storageService.userFilesDocument.update({
                 'fileArray':
@@ -112,7 +118,10 @@ export class SubmissionComponent implements OnInit {
                   ]
               }).then(() => {
                 this.storageService.addNewUserFile({ fullPath, name, downloadUrl });
-              }).catch(err => console.log(err));
+              }).catch(err => {
+                alert(err)
+                console.log(err);
+              });
             }
           }
         );

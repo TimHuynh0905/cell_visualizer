@@ -77,6 +77,9 @@ export class SubmissionsComponent implements OnInit {
         this.newSelectedJsonFile = JSON.parse(data);
         this.cellService.setCurrentJsonFile(this.newSelectedJsonFile);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        alert(err);
+        console.log(err);
+      });
   }
 }
