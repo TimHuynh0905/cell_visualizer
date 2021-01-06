@@ -1,39 +1,44 @@
 <div class='sign-in-form'>
-    <h4>Sign In</h4>
-    <div class='group'>
-        <input 
-            class='form-input'
-            type='email'
-            id='email'
-            name='Email'
-            [(ngModel)]='emailInput'>
-        <label 
-            [ngClass]="emailInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
-            Email
-        </label>
+    <div>
+        <h4>Sign In</h4>
+        <div class='group'>
+            <input 
+                class='form-input'
+                type='email'
+                id='email'
+                name='Email'
+                [(ngModel)]='emailInput'>
+            <label 
+                [ngClass]="emailInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
+                Email
+            </label>
+        </div>
+        <div class='group'>
+            <input 
+                class='form-input'
+                type='password'
+                id='password'
+                name='Password'
+                [(ngModel)]='passwordInput'>
+            <label 
+                [ngClass]="passwordInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
+                Password
+            </label>
+        </div>
+        <button 
+            type="button" 
+            class="btn btn-primary mr-2" 
+            (click)='signin()'>
+                Sign In
+        </button>
+        <button 
+            type="button" 
+            class="btn btn-danger"
+            (click)='cancel()'>
+                Cancel
+        </button>
     </div>
-    <div class='group'>
-        <input 
-            class='form-input'
-            type='password'
-            id='password'
-            name='Password'
-            [(ngModel)]='passwordInput'>
-        <label 
-            [ngClass]="passwordInput.length > 0 ? 'shrink form-input-label' : 'form-input-label'">
-            Password
-        </label>
+    <div class='layer-spinner' *ngIf='isLoading' style='text-align: center;'>
+        <app-loading-spinner></app-loading-spinner>
     </div>
-    <button 
-        type="button" 
-        class="btn btn-primary mr-2" 
-        (click)='signin()'>
-            Sign In
-    </button>
-    <button 
-        type="button" 
-        class="btn btn-danger"
-        (click)='cancel()'>
-            Cancel
-    </button>
 </div>

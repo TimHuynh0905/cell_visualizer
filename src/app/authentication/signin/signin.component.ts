@@ -9,14 +9,17 @@ import { AuthService } from '../auth.service';
 export class SigninComponent implements OnInit{
   emailInput: string = '';
   passwordInput: string = '';
+  isLoading = false;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
-  signin() {
-    this.authService.signin(this.emailInput, this.passwordInput);
+  async signin() {
+    this.isLoading = true;
+    await this.authService.signin(this.emailInput, this.passwordInput);
+    this.isLoading = false;
   }
   
   cancel() {
